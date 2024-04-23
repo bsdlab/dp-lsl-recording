@@ -1,9 +1,8 @@
+from dareplane_utils.default_server.server import DefaultServer
 from fire import Fire
 
 from lsl_recorder.main import init_lsl_recorder_com
 from lsl_recorder.utils.logging import logger
-
-from dareplane_utils.default_server.server import DefaultServer
 
 
 def main(port: int = 8080, ip: str = "127.0.0.1", loglevel: int = 10):
