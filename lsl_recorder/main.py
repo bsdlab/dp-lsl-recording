@@ -23,7 +23,7 @@ except ImportError:
             "to able to parse the config files."
         )
 
-cfg = toml_load(open("./configs/lsl_conf.toml", "rb"))
+cfg = toml_load("./configs/lsl_conf.toml")
 
 
 def init_lsl_recorder_com(
