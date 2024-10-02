@@ -1,10 +1,29 @@
 # import toml as tomllib
-import tomllib
 from pathlib import Path
 
 from lsl_recorder.controller import LSLRecorderCom
 
-cfg = tomllib.load(open("./configs/lsl_conf.toml", "rb"))
+# --- For backwards compatibility with python < 3.11
+try:
+    import tomllib
+
+    def toml_load(file: Path):
+        return tomllib.load(open(file, "rb"))
+
+except ImportError:
+    try:
+        import toml
+
+        def toml_load(file: Path):
+            return toml.load(open(file, "r"))
+
+    except ImportError:
+        raise ImportError(
+            "Please install either use python > 3.11 or install `toml` library"
+            "to able to parse the config files."
+        )
+
+cfg = toml_load(open("./configs/lsl_conf.toml", "rb"))
 
 
 def init_lsl_recorder_com(
