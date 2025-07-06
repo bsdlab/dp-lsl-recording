@@ -29,4 +29,23 @@ cfg = toml_load("./configs/lsl_conf.toml")
 def init_lsl_recorder_com(
     lsl_recording_path: Path = Path(cfg["lsl_recording_path"]),
 ) -> LSLRecorderCom:
+    """Initialize the LSLRecorderCom instance with a specified recording path.
+    
+    Creates and returns an LSLRecorderCom instance using the specified
+    recording path. It defaults to the path defined in the configuration
+    file under the 'lsl_recording_path' key if no path is explicitely provided.
+
+    Parameters
+    ----------
+    lsl_recording_path : Path, optional
+        Directory path where LSL recordings will be saved. 
+        Defaults to the path specified in the configuration file
+        under 'lsl_recording_path' key.
+        
+    Returns
+    -------
+    LSLRecorderCom
+        Configured LSL recorder communication object ready to control
+        the LSL LabRecorder application.
+    """
     return LSLRecorderCom(data_root=lsl_recording_path)
