@@ -1,0 +1,34 @@
+project:
+  type: website
+
+website:
+  sidebar:
+    - id: "main"
+      contents:
+        - section: "Documentation"
+          contents:
+            - reference/index.qmd
+
+quartodoc:
+  package: "lsl_recorder" # name of the package
+  source_dir: "lsl_recorder" # as the source code is within this folder
+
+  title: "Documentation for the dp-lsl-recording module"
+
+  options:
+    signature_name: full
+
+  # write sidebar where quartodoc writes its content without impacting quarto
+  sidebar:
+    file: "reference/_lsl_recording_sidebar.yml"
+
+  sections:
+    - title: "The lsl-recording module"
+      desc: |
+        :::{.callout-info}
+        The github repository for this module is located at:
+        [https://github.com/bsdlab/dp-lsl-recording](https://github.com/bsdlab/dp-lsl-recording)
+        :::
+      contents:
+        - main.init_lsl_recorder_com
+        - controller.LSLRecorderCom
