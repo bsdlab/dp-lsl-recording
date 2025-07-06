@@ -15,23 +15,29 @@ from lsl_recorder.utils.logging import logger
 
 
 class LSLRecorderCom(object):
-    """Communication object to use TCP API of LSL APP-LabRecorder"""
+    """Class to communicate with LSL [LabRecorder](https://github.com/labstreaminglayer/App-LabRecorder) via TCP commands.
+    
+    This class provides a wrapper to communicate with the LSL [LabRecorder](https://github.com/labstreaminglayer/App-LabRecorder)
+    application via TCP commands using a Dareplane server. This allows you to set the recording location,
+    start and stop the recording via the Dareplane control room.
+    
+    The LSL LabRecorder application must be running separately and listening
+    on the specified TCP port before creating an instance of this class.
+    
+    Parameters
+    ----------
+    data_root : Path, optional
+        Root directory for saving recorded data files, by default Path(".")
+    addr : str, optional
+        IP address of the LSL LabRecorder TCP server
+    port : int, optional
+        Port number of the LSL LabRecorder TCP serve
+    """
 
     def __init__(
         self, data_root: Path = Path("."), addr="localhost", port=22345
     ):
-        """Create the object with an appropriate socket
-
-        Parameters
-        ----------
-        data_root : str
-            data root for recording to
-        addr : str, optional
-            connection target address
-        port : int, optional
-            port to connect to
-
-        """
+        """Initialize the LSLRecorderCom class with the approrpiate parameters."""
         self._addr = addr
         self._port = port
         self._data_root = data_root
