@@ -17,9 +17,7 @@ from lsl_recorder.utils.logging import logger
 class LSLRecorderCom(object):
     """Communication object to use TCP API of LSL APP-LabRecorder"""
 
-    def __init__(
-        self, data_root: Path = Path("."), addr="localhost", port=22345
-    ):
+    def __init__(self, data_root: Path = Path("."), addr="localhost", port=22345):
         """Create the object with an appropriate socket
 
         Parameters
@@ -56,9 +54,7 @@ class LSLRecorderCom(object):
         data_root = Path(data_root)  # make sure it is a Path
 
         if data_root is not None:
-            logger.debug(
-                f"Overwriting data root for lsl recorder to: {data_root}"
-            )
+            logger.debug(f"Overwriting data root for lsl recorder to: {data_root}")
             self._data_root = data_root
 
         # Increment with time if already exists
