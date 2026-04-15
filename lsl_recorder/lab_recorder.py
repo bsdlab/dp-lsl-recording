@@ -8,9 +8,9 @@ from lsl_recorder.controller import LSLRecorderCom
 from lsl_recorder.utils.logging import logger
 
 
-def initialize_lab_recorder() -> ModuleConnection:
+def initialize_lab_recorder(LSL_port: int) -> ModuleConnection:
     launcher = ExeLauncher(exe_path=find_lab_recorder_executable())
-    communicator = LSLRecorderCom(name="LabRecorder", addr="localhost", port=22345)
+    communicator = LSLRecorderCom(name="LabRecorder", addr="localhost", port=LSL_port)
     connection = ModuleConnection(
         name="LabRecorder", launcher=launcher, communicator=communicator
     )

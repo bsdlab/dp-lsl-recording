@@ -6,13 +6,15 @@ from lsl_recorder.lab_recorder import initialize_lab_recorder
 from lsl_recorder.utils.logging import logger
 
 
-def main(port: int = 8080, ip: str = "127.0.0.1", loglevel: int = 10):
+def main(
+    port: int = 8080, ip: str = "127.0.0.1", loglevel: int = 10, LSL_port: int = 22345
+):
     logger.setLevel(loglevel)
 
     # Initialize LabRecorder
     try:
         # Try to connect to LabRecorder, if it is not running, start it and then connect
-        lsl_conn = initialize_lab_recorder()
+        lsl_conn = initialize_lab_recorder(LSL_port=LSL_port)
         lsl_comm: LSLRecorderCom = lsl_conn.communicator
     except Exception as e:
         logger.error(f"Failed to initialize LabRecorder: {e}")
