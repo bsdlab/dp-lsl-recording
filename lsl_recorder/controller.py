@@ -7,41 +7,25 @@
 # We use the TCP API for the LSL APP-LabRecorder
 # https://github.com/labstreaminglayer/App-LabRecorder
 
-import socket
 import time
 from pathlib import Path
+
+from dareplane_utils.module_handling.communication import SocketCommunicator
 
 from lsl_recorder.utils.logging import logger
 
 
-class LSLRecorderCom(object):
+class LSLRecorderCom(SocketCommunicator):
     """Communication object to use TCP API of LSL APP-LabRecorder"""
 
     def __init__(
-        self, data_root: Path = Path("."), addr="localhost", port=22345
+        self, name: str, data_root: Path = Path("."), addr="localhost", port=22345
     ):
-        """Create the object with an appropriate socket
-
-        Parameters
-        ----------
-        data_root : str
-            data root for recording to
-        addr : str, optional
-            connection target address
-        port : int, optional
-            port to connect to
-
-        """
-        self._addr = addr
-        self._port = port
+        super().__init__(name=name, ip=addr, port=port)
         self._data_root = data_root
 
-        self._data_root.mkdir(exist_ok=True, parents=True)
-
-        self._socket = socket.create_connection((self._addr, self._port))
-
     def select_all(self):
-        self._socket.sendall(b"select all\n")
+        self.send(b"select all\n")
         return 0
 
     def set_recording_file(
@@ -56,9 +40,7 @@ class LSLRecorderCom(object):
         data_root = Path(data_root)  # make sure it is a Path
 
         if data_root is not None:
-            logger.debug(
-                f"Overwriting data root for lsl recorder to: {data_root}"
-            )
+            logger.debug(f"Overwriting data root for lsl recorder to: {data_root}")
             self._data_root = data_root
 
         # Increment with time if already exists
@@ -71,20 +53,20 @@ class LSLRecorderCom(object):
             )
 
         msg = f"filename {{root:{fname.parent}}} {{template:{fname.stem + fname.suffix}}}\n"
-        self._socket.sendall(msg.encode("UTF-8"))
+        self.send(msg.encode("UTF-8"))
         time.sleep(1)
         return 0
 
     def update(self):
-        self._socket.sendall(b"update\n")
+        self.send(b"update\n")
         return 0
 
     def record(self):
-        self._socket.sendall(b"start\n")
+        self.send(b"start\n")
         return 0
 
     def stop(self):
-        ret = self._socket.sendall(b"stop\n")
+        self.send(b"stop\n")
         time.sleep(5)
         return 0
 

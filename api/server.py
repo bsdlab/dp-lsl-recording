@@ -1,22 +1,33 @@
 from dareplane_utils.default_server.server import DefaultServer
 from fire import Fire
 
-from lsl_recorder.main import init_lsl_recorder_com
+from lsl_recorder.controller import LSLRecorderCom
+from lsl_recorder.lab_recorder import initialize_lab_recorder
 from lsl_recorder.utils.logging import logger
 
 
-def main(port: int = 8080, ip: str = "127.0.0.1", loglevel: int = 10):
+def main(
+    port: int = 8080, ip: str = "127.0.0.1", loglevel: int = 10, LSL_port: int = 22345
+):
     logger.setLevel(loglevel)
 
-    # Get the communication manager
-    lslm = init_lsl_recorder_com()
+    # Initialize LabRecorder
+    try:
+        # Try to connect to LabRecorder, if it is not running, start it and then connect
+        lsl_conn = initialize_lab_recorder(LSL_port=LSL_port)
+        lsl_comm: LSLRecorderCom = lsl_conn.communicator
+    except Exception as e:
+        logger.error(f"Failed to initialize LabRecorder: {e}")
+        raise RuntimeError(
+            "Failed to initialize LabRecorder automatically. Please ensure it is running and accessible."
+        ) from e
 
     pcommand_map = {
-        "SELECT_ALL": lslm.select_all,
-        "SET_SAVE_PATH": lslm.set_recording_file,
-        "UPDATE": lslm.update,
-        "RECORD": lslm.record,
-        "STOPRECORD": lslm.stop,
+        "SELECT_ALL": lsl_comm.select_all,
+        "SET_SAVE_PATH": lsl_comm.set_recording_file,
+        "UPDATE": lsl_comm.update,
+        "RECORD": lsl_comm.record,
+        "STOPRECORD": lsl_comm.stop,
     }
 
     server = DefaultServer(
