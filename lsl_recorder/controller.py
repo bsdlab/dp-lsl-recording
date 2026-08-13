@@ -23,6 +23,7 @@ class LSLRecorderCom(SocketCommunicator):
     ):
         super().__init__(name=name, ip=addr, port=port)
         self._data_root = data_root
+        logger.debug("SocketCommunicator initialized")
 
     def select_all(self):
         self.send(b"select all\n")

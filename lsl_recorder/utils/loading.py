@@ -21,4 +21,7 @@ except ImportError:
             "to able to parse the config files."
         )
 
-cfg = toml_load("./configs/lsl_conf.toml")
+
+def load_config() -> dict:
+    cfg = toml_load("./configs/lsl_conf.toml")
+    return cfg

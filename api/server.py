@@ -12,16 +12,19 @@ def main(
     logger.setLevel(loglevel)
 
     # Initialize LabRecorder
+    logger.debug("Starting LabRecorder and initializing connection")
     try:
         # Try to connect to LabRecorder, if it is not running, start it and then connect
         lsl_conn = initialize_lab_recorder(LSL_port=LSL_port)
         lsl_comm: LSLRecorderCom = lsl_conn.communicator
+
     except Exception as e:
         logger.error(f"Failed to initialize LabRecorder: {e}")
         raise RuntimeError(
             "Failed to initialize LabRecorder automatically. Please ensure it is running and accessible."
         ) from e
 
+    logger.debug("Linking PCOMMS")
     pcommand_map = {
         "SELECT_ALL": lsl_comm.select_all,
         "SET_SAVE_PATH": lsl_comm.set_recording_file,
@@ -31,12 +34,14 @@ def main(
     }
 
     server = DefaultServer(
-        port, ip=ip, pcommand_map=pcommand_map, name="lsl_control_server"
+        port, ip=ip, pcommand_map=pcommand_map, name="lsl_control_server", logger=logger
     )
 
     # initialize to start the socket
+    logger.debug("Initializing DefaultServer")
     server.init_server()
     # start processing of the server
+    logger.debug("receiving connections")
     server.start_listening()
 
     return 0

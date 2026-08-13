@@ -1,3 +1,3 @@
 from dareplane_utils.logging.logger import get_logger
 
-logger = get_logger("lsl_recording")
+logger = get_logger("lsl_recording", add_console_handler=True)

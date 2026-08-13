@@ -1,1 +1,6 @@
 lsl_recording_path = '..'
+# lsl_recorder_exe_path = ''  # provide this path if you do not want to search any default directory at 
+lsl_recorder_exe_path = 'C:\Users\bsdlab\Desktop\labstreaminglayer binaries\LabRecorder\LabRecorder.exe'  # provide this path if you do not want to search any default directory at 
+        # "C:\\Program Files\\LabRecorder\\LabRecorder.exe",  # Windows default path
+        # "/Applications/LabRecorder.app/Contents/MacOS/LabRecorder",  # macOS default path
+        # "/usr/bin/LabRecorder",  # Common Linux path
